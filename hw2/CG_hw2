@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+from optparse import OptionParser
+from ps import *
+from xpm import *
+
+parser = OptionParser()
+parser.add_option("-f", "--file", dest="filename",
+        help="Source postscript file", metavar="FILE", default="hw1.ps")
+parser.add_option("-s", "--scale", dest="scale",
+        help="Scale factor about the world origin", default="1")
+parser.add_option("-r", "--rotation", dest="rotation",
+        help="Counter clockwise rotation.", default="0")
+parser.add_option("-m", "--xtrans", dest="xtranslation",
+        help="Degrees to translate in X dimension.", default="0")
+parser.add_option("-n", "--ytrans", dest="ytranslation",
+        help="Degrees to translate in Y dimension.", default="0")
+parser.add_option("-a", "--xlow", dest="xlow",
+        help="Lowest x bound of world window.", default="0")
+parser.add_option("-b", "--ylow", dest="ylow",
+        help="Lowest y bound of world window.", default="0")
+parser.add_option("-c", "--xhigh", dest="xhigh",
+        help="Highest x bound of world window.", default="499")
+parser.add_option("-d", "--yhigh", dest="yhigh",
+        help="Highest y bound of world window.", default="499")
+
+(options, args) = parser.parse_args()
+# Parse PS file
+f = open(options.filename,'r')
+lines = f.readlines()
+hasbegun = False
+commands = []
+# Sometimes things just get flipped...
+#options.ylow = str(-1 * int(options.ylow))
+#options.xlow = str(-1 * int(options.xlow))
+for l in lines:
+    if l == '%%%END\n':
+        hasbegun = False
+    if hasbegun == True:
+        l = GetPSCommand(l,options)
+        if l != None:
+            commands.extend(l)
+    if l == '%%%BEGIN\n':
+        hasbegun = True
+CreateXPM(options,commands)

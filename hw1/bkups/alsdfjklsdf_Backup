@@ -1,0 +1,8 @@
+#ifndef LINECOMMAND_H
+#define LINECOMMAND_H
+
+#include "Commands.h"
+
+    class LineCommand : public Command;
+
+#endif

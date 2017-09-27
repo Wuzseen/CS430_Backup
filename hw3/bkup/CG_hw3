@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+from optparse import OptionParser
+from ps import *
+from xpm import *
+
+parser = OptionParser()
+parser.add_option("-f", "--file", dest="filename",
+        help="Source postscript file", metavar="FILE", default="hw3_split.ps")
+parser.add_option("-s", "--scale", dest="scale",
+        help="Scale factor about the world origin", default="1")
+parser.add_option("-r", "--rotation", dest="rotation",
+        help="Counter clockwise rotation.", default="0")
+parser.add_option("-m", "--xtrans", dest="xtranslation",
+        help="Degrees to translate in X dimension.", default="0")
+parser.add_option("-n", "--ytrans", dest="ytranslation",
+        help="Degrees to translate in Y dimension.", default="0")
+parser.add_option("-a", "--xlow", dest="xlow",
+        help="Lowest x bound of world window.", default="0")
+parser.add_option("-b", "--ylow", dest="ylow",
+        help="Lowest y bound of world window.", default="0")
+parser.add_option("-c", "--xhigh", dest="xhigh",
+        help="Highest x bound of world window.", default="250")
+parser.add_option("-d", "--yhigh", dest="yhigh",
+        help="Highest y bound of world window.", default="250")
+parser.add_option("-j", "--xviewlow", dest="xviewlow",
+        help="Lowest x bound of viewport window.", default="0")
+parser.add_option("-o", "--xviewhigh", dest="xviewhigh",
+        help="Highest x bound of viewport window.", default="200")
+parser.add_option("-k", "--yviewlow", dest="yviewlow",
+        help="Lowest y bound of viewport window.", default="0")
+parser.add_option("-p", "--yviewhigh", dest="yviewhigh",
+        help="Highest y bound of viewport window.", default="200")
+
+(options, args) = parser.parse_args()
+# Parse PS file
+f = open(options.filename,'r')
+lines = f.readlines()
+hasbegun = False
+commands = []
+# Sometimes things just get flipped...
+#options.ylow = str(-1 * int(options.ylow))
+#options.xlow = str(-1 * int(options.xlow))
+for l in lines:
+    if l.isspace():
+        continue
+    if '%%%BEGIN' in l:
+        hasbegun = True
+        continue
+    if '%%%END' in l:
+        hasbegun = False
+        continue
+    if hasbegun == True:
+        lc = GetPSCommand(l,options)
+        if lc != None:
+            commands.append(lc)
+
+CreateXPM(options,commands)

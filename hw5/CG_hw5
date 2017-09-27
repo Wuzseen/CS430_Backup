@@ -1,0 +1,96 @@
+#!/usr/bin/env python
+from optparse import OptionParser
+from smf import *
+from xpm import *
+
+parser = OptionParser()
+parser.add_option("-f", "--file", dest="filename",
+        help="Primary Source SMF file", metavar="FILE", default="bound-sprellpsd.smf", type="string")
+parser.add_option("-1", "--f1", dest="fileone",
+        help="First Source SMF file", metavar="FILE", default="", type="string")
+parser.add_option("-2", "--f2", dest="filetwo",
+        help="Second Source SMF file", metavar="FILE", default="", type="string")
+parser.add_option("-3", "--f3", dest="filethree",
+        help="Third Source SMF file", metavar="FILE", default="", type="string")
+parser.add_option("-j", "--xviewlow", dest="xviewlow",
+        help="Lowest x bound of viewport window.", default="0", type="int")
+parser.add_option("-k", "--yviewlow", dest="yviewlow",
+        help="Lowest y bound of viewport window.", default="0", type="int")
+parser.add_option("-o", "--xviewhigh", dest="xviewhigh",
+        help="Highest x bound of viewport window.", default="500", type="int")
+parser.add_option("-p", "--yviewhigh", dest="yviewhigh",
+        help="Highest y bound of viewport window.", default="500", type="int")
+parser.add_option("-x", "--xprp", dest="xprp",
+        help="X of Projection Ref Point", default="0.0", type="float")
+parser.add_option("-y", "--yprp", dest="yprp",
+        help="y of Projection Ref Point", default="0.0", type="float")
+parser.add_option("-z", "--zprp", dest="zprp",
+        help="Z of Projection Ref Point", default="1.0", type="float")
+parser.add_option("-X", "--xvrp", dest="xvrp",
+        help="X of View Ref Point", default="0.0", type="float")
+parser.add_option("-Y", "--yvrp", dest="yvrp",
+        help="Y of View Ref Point", default="0.0", type="float")
+parser.add_option("-Z", "--zvrp", dest="zvrp",
+        help="Z of View Ref Point", default="0.0", type="float")
+parser.add_option("-q", "--xvpn", dest="xvpn",
+        help="X of View Plane Normal", default="0.0", type="float")
+parser.add_option("-r", "--yvpn", dest="yvpn",
+        help="Y of View Plane Normal", default="0.0", type="float")
+parser.add_option("-w", "--zvpn", dest="zvpn",
+        help="Z of View Plane Normal", default="-1.0", type="float")
+parser.add_option("-Q", "--xvup", dest="xvup",
+        help="X of View Up Vector", default="0.0", type="float")
+parser.add_option("-R", "--yvup", dest="yvup",
+        help="Y of View Up Vector", default="1.0", type="float")
+parser.add_option("-W", "--zvup", dest="zvup",
+        help="Z of View Up Vector", default="0.0", type="float")
+parser.add_option("-u", "--umin", dest="umin",
+        help="U min of VRC window", default="-0.7", type="float")
+parser.add_option("-v", "--vmin", dest="vmin",
+        help="V min of VRC window", default="-0.7", type="float")
+parser.add_option("-U", "--umax", dest="umax",
+        help="U max of VRC window", default="0.7", type="float")
+parser.add_option("-V", "--vmax", dest="vmax",
+        help="V max of VRC window", default="0.7", type="float")
+parser.add_option("-F", "--FCONST", dest="F",
+        help="F const", default="0.6", type="float")
+parser.add_option("-B", "--BCONST", dest="B",
+        help="B const", default="-0.6", type="float")
+parser.add_option("-P", "--parallel", dest="parallel", help="Use parallel projection otherwise use perspective.", action="store_true", default="False")
+
+(options, args) = parser.parse_args()
+# Parse PS file
+if options.fileone != "":
+    f1 = open(options.fileone,'r')
+else:
+    f1 = open(options.filename,'r')
+lines = f1.readlines()
+commands = []
+for l in lines:
+    if not l.isspace():
+        BuildSMF(l,options)
+
+for c in TheThirdDimension(options):
+    commands.append((c,1))
+
+if options.filetwo != "":
+    ClearSMF()
+    f2 = open(options.filetwo,'r')
+    lines = f2.readlines()
+    for l in lines:
+        if not l.isspace():
+            BuildSMF(l,options)
+    for c in TheThirdDimension(options):
+        commands.append((c,2))
+
+if options.filethree != "":
+    ClearSMF()
+    f3 = open(options.filethree,'r')
+    lines = f3.readlines()
+    for l in lines:
+        if not l.isspace():
+            BuildSMF(l,options)
+    for c in TheThirdDimension(options):
+        commands.append((c,3))
+
+CreateXPM(options,commands)

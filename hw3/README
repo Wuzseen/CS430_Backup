@@ -1,0 +1,31 @@
+CS 430 - Computer Graphics
+Assignment 03
+Timothy Day
+
+Included is the source code for the third assignment detailed on the homework page.
+
+The included makefile does little to nothing as the code is python based, however there is a run target which will run the program with default settings.
+Also included, Clean, will clear all the .pyc bytecode files that python generates as well as remove all xpm files from the directory.
+
+The sample postscript files for the homework is also included--Post script is not cleaned by the makefile.
+
+NEW IN ASSIGNMENT 3:
+Scan filling
+World to Viewport Transformations
+Fixed polygon clipping from HW2
+
+To run the program, ./CG_hw3 will run it with default options.  The options for the program are detailed in the assignment:
+https://www.cs.drexel.edu/~david/Classes/CS430/HWs/Assignment1.html
+
+
+CG_hw3: The main python file, the command line parsing is done in here. THIS IS SPECIFIED AS A LINUX EXECUTABLE VIA #!/BIN/BASH AT TOP OF FILE
+xpm.py: This is really where the main logic of the program is done, none of the math is here but the xpm file is written and the pixels organized
+ps.py: The line clipping and DDA algorithm are in here.  A factory function will be used to read future postcript commands, for now it only recognizes Line.
+vectors.py: Implements basic functionality of points and vectors.
+
+The python numpy package is occasionally included though the functionality is never utilized anywhere.  I was working on matrix transformations but opted for the simpler implementation for now.
+
+
+The program was tested and created by SSHing into tux with x tunneling and viewing xpm with built in display.  All the sample images on the assignment page were working on Tux at the time of submission
+
+The final example, sample D wasn't transforming properly but the scan filling and viewport transformation scaling are working on all examples.

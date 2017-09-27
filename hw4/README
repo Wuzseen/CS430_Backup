@@ -1,0 +1,25 @@
+CS 430 - Computer Graphics
+Assignment 04
+Timothy Day
+
+Included is the source code for the third assignment detailed on the homework page.
+
+The included makefile does little to nothing as the code is python based, however there is a run target which will run the program with default settings.
+Also included, Clean, will clear all the .pyc bytecode files that python generates as well as remove all xpm files from the directory.
+
+NEW IN ASSIGNMENT 4:
+Parallel and Perspective 3D Projection
+SMF File reading
+
+To run the program, ./CG_hw4 will run it with default options.  The options for the program are detailed in the assignment:
+https://www.cs.drexel.edu/~david/Classes/CS430/HWs/Assignment4.html
+
+
+CG_hw4: The main python file, the command line parsing is done in here. THIS IS SPECIFIED AS A LINUX EXECUTABLE VIA #!/BIN/BASH AT TOP OF FILE
+xpm.py: Not changed in assignment 4
+smf.py: Handles the reading and assembly of the SMF file and tris/verts.  The main graphics pipeline is in here in the function "TheThirdDimension", a line here can be uncommented to view the transformation matrices
+vectors.py: Implements all the logic for the matrices used for the transformation.  Inside the file are several functions for the parallel and perspective transformations
+
+The python numpy package provides dot product and matrix representations
+
+The program was tested and created by SSHing into tux with x tunneling and viewing xpm with built in display.  All the sample images on the assignment page were working on Tux at the time of submission.

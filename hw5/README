@@ -1,0 +1,28 @@
+CS 430 - Computer Graphics
+Assignment 05
+Timothy Day
+
+Included is the source code for the fifth assignment detailed on the homework page.
+
+The included makefile does little to nothing as the code is python based, however there is a run target which will run the program with default settings.
+Also included, Clean, will clear all the .pyc bytecode files that python generates as well as remove all xpm files from the directory.
+
+NEW IN ASSIGNMENT 4:
+Depth Cueing
+Z-buffering
+
+To run the program, ./CG_hw5 will run it with default options.  The options for the program are detailed in the assignment:
+https://www.cs.drexel.edu/~david/Classes/CS430/HWs/Assignment4.html
+
+# Strictly speaking, python's argparse library does not support options like -1/-2/-3, however they do seem to work on tux.
+
+CG_hw5: The main python file, the command line parsing is done in here. THIS IS SPECIFIED AS A LINUX EXECUTABLE VIA #!/BIN/BASH AT TOP OF FILE
+xpm.py: The depth cueing and z-buffering checks take place in here.  Stored in the draw buffer are the color indices ranged 0-19 for the shade which corresponds to the depth.  The z-buffer is stored in a separate data structure
+smf.py: This handles the scanfilling and a large part of the z-buffering.
+vectors.py: Not changed since assignment 4
+
+The python numpy package provides dot product and matrix representations
+
+The program was tested and created by SSHing into tux with x tunneling and viewing xpm with built in display.  All the sample images on the assignment page were working on Tux at the time of submission.
+
+There are several visual artifacts present due to a bug with the scan filling from the third assignment.  I could not find this bug at the time of submission.  The depth cueing and z-buffering still works however.
